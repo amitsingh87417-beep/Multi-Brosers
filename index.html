@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MultiTabMax — Smart Multi-Tab &amp; Media Wall</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand-wrap">
+        <div class="brand-logo">MT</div>
+        <div>
+          <div class="brand-title-row">
+            <h1>MultiTabMax</h1>
+            <span class="badge">SMART WALL EDITION</span>
+          </div>
+          <p class="subtitle">Multi-column link &amp; video wall for Websites, YouTube, Instagram, Facebook &amp; Media Links.</p>
+        </div>
+      </div>
+
+      <div class="header-metrics">
+        <span class="metric-pill" id="activeCountBadge">Active Slots: 0</span>
+        <span class="metric-pill" id="memoryHintBadge">Safe Mode: On-Demand Load</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-shell">
+    <section class="launcher-card" aria-label="Multi-Tab Wall Controls">
+      <div class="field-group">
+        <label for="targetUrlInput">Target URL (Website, YouTube, Instagram, Facebook, or Video Link)</label>
+        <div class="url-row">
+          <input
+            type="url"
+            id="targetUrlInput"
+            value="https://growglobalsocial.vercel.app/"
+            placeholder="https://example.com or https://www.youtube.com/watch?v=..."
+          />
+          <button type="button" id="presetYtBtn" class="ghost-btn" title="Load sample YouTube URL">YT Sample</button>
+          <button type="button" id="presetIgBtn" class="ghost-btn" title="Load sample Instagram URL">IG Sample</button>
+          <button type="button" id="presetFbBtn" class="ghost-btn" title="Load sample Facebook URL">FB Sample</button>
+        </div>
+      </div>
+
+      <div class="controls-grid">
+        <div class="field-group">
+          <label for="tabCountInput">Wall Slots / Tabs (1 – 1000)</label>
+          <input type="number" id="tabCountInput" min="1" max="1000" value="12" />
+        </div>
+
+        <div class="field-group">
+          <label for="columnsSelect">Grid Columns</label>
+          <select id="columnsSelect">
+            <option value="1">1 Column</option>
+            <option value="2">2 Columns</option>
+            <option value="3">3 Columns</option>
+            <option value="4" selected>4 Columns</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="renderModeSelect">Slot Render Mode</label>
+          <select id="renderModeSelect">
+            <option value="smart" selected>Smart Embed + Direct Fallback (Recommended)</option>
+            <option value="cards">Lightweight Cards Only (Fastest for 100–1000)</option>
+          </select>
+        </div>
+
+        <div class="action-buttons">
+          <button type="button" id="launchBtn" class="btn-primary">&#9654; Launch Wall</button>
+          <button type="button" id="loadAllEmbedsBtn" class="btn-success" title="Load iframes only for visible slots (capped safely)">Load Visible Frames</button>
+          <button type="button" id="clearBtn" class="btn-danger">Clear</button>
+        </div>
+      </div>
+
+      <div class="options-bar">
+        <label class="checkbox-label">
+          <input type="checkbox" id="autoMuteCheck" checked />
+          <span>Auto-Mute / Safe Frame Mode (Recommended for multiple slots)</span>
+        </label>
+        <div class="status-text" id="wallStatusText">Ready. Choose URL, slot count (up to 1000), and click Launch Wall.</div>
+      </div>
+    </section>
+
+    <section class="info-strip">
+      <article class="info-box">
+        <h3>YouTube Videos &amp; Shorts</h3>
+        <p>Automatically converts <code>youtu.be</code>, <code>watch?v=</code>, <code>/shorts/</code>, and <code>/embed/</code> URLs into an embeddable player when allowed by the creator.</p>
+      </article>
+      <article class="info-box">
+        <h3>Instagram, Facebook &amp; External Sites</h3>
+        <p>Many social platforms and websites block third-party <code>iframe</code> embedding via headers or login rules; each slot provides one-click <strong>Open Direct</strong> &amp; <strong>Load Frame</strong> controls.</p>
+      </article>
+      <article class="info-box">
+        <h3>1000-Slot Stability</h3>
+        <p>Creating 1000 live browser iframes at once can freeze mobile/desktop memory. Slots render in clean batches with pagination and on-demand frame loading.</p>
+      </article>
+    </section>
+
+    <section id="wallGrid" class="wall-grid cols-4" aria-label="Generated Multi-Tab Wall"></section>
+
+    <div class="pagination-bar" id="paginationBar">
+      <button type="button" id="showMoreBtn" class="btn-primary hidden">Show More Slots</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>MultiTabMax Smart Wall &bull; Built for clean multi-link &amp; media organization.</span>
+      <span>Note: External embedding depends on each target platform's frame/CORS policy.</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
