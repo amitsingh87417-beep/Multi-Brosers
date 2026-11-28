@@ -1,13 +1,13 @@
-# MultiTabMax — Smart Multi-Tab & Media Wall (GitHub Ready)
+# Multi Tap Browser — Pro Workspace v4.0
 
-Is repository/ZIP mein `MultiTabMax` ka clean aur responsive frontend code hai jisse aap **Website**, **YouTube**, **Instagram**, **Facebook**, aur **Other** links ko `1` se `1000` slots aur `1`–`4` columns ke saath organize kar sakte hain.
+## What's Upgraded & Fixed in v4.0
+- **Instant Load Fix:** Clicking **Go** or **Open All** now loads videos and pages immediately (fixed the v3 blank placeholder bug).
+- **Root-Ready ZIP:** `index.html` is placed directly at the root so you can upload straight to GitHub, Vercel, or Render without moving folders.
+- **All-Platform Video Embeds:** Supports YouTube, YouTube Shorts, YouTube Live, Instagram Reels/Posts, Facebook Videos, TikTok, Vimeo, and Dailymotion.
+- **1,000 Saved Tab Library:** Search, open, delete, and back up up to 1,000 URLs without duplicates.
+- **Smooth Performance:** Up to 12 live tabs at once with lazy loading, fullscreen expand, auto-reload timer, and 4 color themes (Indigo Neon, Emerald Dark, Sunset Pink, Clean Light).
+- **Clean Mobile UI:** Saved Library and Safe Site Check open as collapsible panels so your screen stays uncluttered.
 
-## Files Included
-- `index.html`
-- `styles.css`
-- `app.js`
-- `README.md`
-
-## Important Technical Notes
-- **1000 Slots Without Browser Crash:** `1000` slots tak set kiya ja sakta hai, lekin browser/phone memory bachane ke liye slots batch mein (`24` per batch) aur live frames safe cap (`12` max live frames) ke saath load hote hain.
-- **YouTube vs. Instagram/Facebook/Websites:** YouTube links (`watch?v=`, `youtu.be`, `/shorts/`, `/embed/`) embeddable format mein convert hote hain jab creator embedding allow kare; Instagram, Facebook, aur kai websites `X-Frame-Options` / login walls ke kaaran inline iframe block kar sakti hain, isliye har slot par **Open Direct** button diya gaya hai.
+## How to Use
+1. Extract `multi-tap-browser-v4.zip`.
+2. Open `index.html` in Chrome, or upload the files directly to GitHub / Vercel / Render.

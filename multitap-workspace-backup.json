@@ -1,0 +1,33 @@
+{
+  "app": "Multi Tap Browser",
+  "version": "4.0",
+  "exportedAt": "2026-11-28T14:08:00.000Z",
+  "openTabs": [
+    {
+      "id": 1,
+      "title": "Saved YT Short",
+      "url": "https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA"
+    },
+    {
+      "id": 2,
+      "title": "Saved YT Short",
+      "url": "https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA"
+    }
+  ],
+  "tabs": [
+    {
+      "id": "s1",
+      "title": "Saved YT Short",
+      "url": "https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA"
+    }
+  ],
+  "customShortcuts": [
+    [
+      "https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY",
+      "Saved YT Short",
+      "https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA"
+    ]
+  ],
+  "theme": "default",
+  "device": "mobile"
+}

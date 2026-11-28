@@ -3,116 +3,1235 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MultiTabMax — Smart Multi-Tab &amp; Media Wall</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Multi Tap Browser — Pro Workspace v4.0</title>
+  <style>
+    :root {
+      --bg-1: #070b14;
+      --bg-2: #0f172a;
+      --panel: rgba(15, 23, 42, 0.88);
+      --card: #111827;
+      --border: rgba(148, 163, 184, 0.18);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-2: #06b6d4;
+      --accent-glow: rgba(99, 102, 241, 0.35);
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --radius: 14px;
+    }
+
+    body.theme-emerald {
+      --bg-1: #04130f;
+      --bg-2: #09241c;
+      --panel: rgba(9, 36, 28, 0.9);
+      --card: #0c2c23;
+      --accent: #10b981;
+      --accent-2: #2dd4bf;
+      --accent-glow: rgba(16, 185, 129, 0.35);
+    }
+
+    body.theme-sunset {
+      --bg-1: #160913;
+      --bg-2: #240f1f;
+      --panel: rgba(36, 15, 31, 0.9);
+      --card: #281123;
+      --accent: #ec4899;
+      --accent-2: #f97316;
+      --accent-glow: rgba(236, 72, 153, 0.35);
+    }
+
+    body.theme-light {
+      --bg-1: #eef2ff;
+      --bg-2: #f8fafc;
+      --panel: rgba(255, 255, 255, 0.94);
+      --card: #ffffff;
+      --border: rgba(15, 23, 42, 0.12);
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #4f46e5;
+      --accent-2: #0ea5e9;
+      --accent-glow: rgba(79, 70, 229, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, var(--bg-2), var(--bg-1) 65%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Glass Header */
+    .topbar {
+      background: var(--panel);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-size: 1.15rem;
+      color: #fff;
+      box-shadow: 0 4px 16px var(--accent-glow);
+      font-weight: 800;
+    }
+
+    .brand-title {
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      background: linear-gradient(90deg, var(--text), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: block;
+      margin-top: -2px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .url-box {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 230px;
+      max-width: 440px;
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px 4px 3px 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .url-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .url-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      outline: none;
+      font-size: 0.88rem;
+      padding: 6px 4px;
+      min-width: 0;
+    }
+
+    select, input[type="text"] {
+      background: var(--bg-1);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 10px;
+      border-radius: 9px;
+      outline: none;
+      font-size: 0.82rem;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 9px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px var(--accent-glow);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.sec {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    button.sec:hover {
+      border-color: var(--accent);
+      box-shadow: none;
+    }
+
+    button.success {
+      background: linear-gradient(135deg, #059669, #10b981);
+    }
+
+    button.danger {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+    }
+
+    /* Subbar */
+    .subbar {
+      background: rgba(0, 0, 0, 0.16);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .shortcuts {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      align-items: center;
+      flex: 1;
+      padding-bottom: 2px;
+    }
+
+    .chip {
+      background: var(--card);
+      color: var(--text);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      white-space: nowrap;
+      border: 1px solid var(--border);
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip:hover {
+      border-color: var(--accent-2);
+      transform: translateY(-1px);
+    }
+
+    .chip .del-chip {
+      color: var(--muted);
+      font-weight: bold;
+      margin-left: 2px;
+    }
+
+    .chip .del-chip:hover {
+      color: var(--danger);
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.76rem;
+    }
+
+    /* Collapsible Panels */
+    .drawer-panel {
+      display: none;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 18px;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .drawer-panel.open {
+      display: flex;
+    }
+
+    .drawer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .saved-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 8px;
+      width: 100%;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .saved-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.78rem;
+    }
+
+    .saved-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      color: var(--text);
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      padding: 18px;
+      flex: 1;
+      align-items: start;
+    }
+
+    .grid.size-compact {
+      grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+    }
+
+    .grid.size-wide {
+      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    }
+
+    /* Mobile Frame Card */
+    .phone-frame {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 26px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+      width: 100%;
+      margin-inline: auto;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+      transition: border-color 0.2s, max-width 0.25s ease;
+      position: relative;
+    }
+
+    .phone-frame:hover {
+      border-color: var(--accent);
+    }
+
+    .phone-frame.device-mobile { max-width: 410px; }
+    .phone-frame.device-tablet { max-width: 740px; }
+    .phone-frame.device-desktop { max-width: 100%; }
+
+    .phone-frame.expanded {
+      position: fixed;
+      inset: 14px;
+      height: auto;
+      max-width: none !important;
+      z-index: 999;
+      border-radius: 18px;
+      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.78);
+    }
+
+    .phone-status {
+      background: linear-gradient(90deg, rgba(99, 102, 241, 0.16), rgba(6, 182, 212, 0.14));
+      padding: 7px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.73rem;
+      color: var(--text);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .notch {
+      width: 68px;
+      height: 11px;
+      background: #020617;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .phone-bar {
+      display: flex;
+      gap: 5px;
+      padding: 7px 8px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .phone-bar input {
+      flex: 1;
+      padding: 6px 9px;
+      font-size: 0.8rem;
+      border-radius: 7px;
+      min-width: 0;
+    }
+
+    .phone-bar button {
+      padding: 6px 8px;
+      font-size: 0.76rem;
+      border-radius: 7px;
+    }
+
+    .phone-screen {
+      flex: 1;
+      background: #000;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lazy-placeholder {
+      color: var(--muted);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.84rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+
+    .info-bar {
+      padding: 5px 12px;
+      font-size: 0.72rem;
+      background: var(--panel);
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+    }
+
+    .badge-mode {
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: 0.25s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .topbar { padding: 10px 12px; }
+      .subbar { padding: 8px 12px; }
+      .grid { padding: 12px; gap: 14px; }
+      .phone-frame { height: 520px; }
+    }
+  </style>
 </head>
 <body>
+
   <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="brand-wrap">
-        <div class="brand-logo">MT</div>
-        <div>
-          <div class="brand-title-row">
-            <h1>MultiTabMax</h1>
-            <span class="badge">SMART WALL EDITION</span>
-          </div>
-          <p class="subtitle">Multi-column link &amp; video wall for Websites, YouTube, Instagram, Facebook &amp; Media Links.</p>
-        </div>
+    <div class="brand-wrap">
+      <div class="logo-badge">MT</div>
+      <div>
+        <div class="brand-title">Multi Tap Browser</div>
+        <span class="brand-sub">Pro Workspace v4.0 • Smart Video &amp; Multi-Screen</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="url-box">
+        <input type="text" id="globalUrl" placeholder="Paste YouTube, Shorts, IG Reel, FB Video or Web URL..." onkeydown="if(event.key==='Enter') openAllScreens()" />
+        <button onclick="openAllScreens()">▶ Open All</button>
       </div>
 
-      <div class="header-metrics">
-        <span class="metric-pill" id="activeCountBadge">Active Slots: 0</span>
-        <span class="metric-pill" id="memoryHintBadge">Safe Mode: On-Demand Load</span>
-      </div>
+      <button class="success" onclick="addPhone()">+ Add Tab</button>
+      <button class="sec" onclick="addMultiple(2)">+2 Tabs</button>
+      <button class="sec" onclick="reloadAll()">↻ Reload</button>
+      <button class="sec" onclick="togglePanel('savedPanel')">☷ Saved (<span id="savedBadge">0</span>)</button>
+      <button class="sec" onclick="togglePanel('safeTestPanel')">⚡ Site Check</button>
+
+      <select id="deviceSelect" onchange="changeDevicePreview()" title="Device Preview">
+        <option value="mobile">📱 Mobile Frame</option>
+        <option value="tablet">▣ Tablet Frame</option>
+        <option value="desktop">💻 Full Width</option>
+      </select>
+
+      <select id="sizeSelect" onchange="changeGridSize()" title="Grid Density">
+        <option value="normal">Grid: Normal</option>
+        <option value="compact">Grid: Compact</option>
+        <option value="wide">Grid: Wide</option>
+      </select>
+
+      <select id="autoReload" onchange="setAutoReload()" title="Auto Reload Timer">
+        <option value="0">⏱ Reload: Off</option>
+        <option value="30">⏱ 30 sec</option>
+        <option value="60">⏱ 60 sec</option>
+        <option value="120">⏱ 2 min</option>
+      </select>
+
+      <select id="themeSelect" onchange="changeTheme()" title="Color Theme">
+        <option value="default">🎨 Indigo Neon</option>
+        <option value="emerald">🎨 Emerald Dark</option>
+        <option value="sunset">🎨 Sunset Pink</option>
+        <option value="light">🎨 Clean Light</option>
+      </select>
+
+      <button class="sec" onclick="exportBackup()">⬇ Backup</button>
+      <button class="sec" onclick="document.getElementById('importFile').click()">⬆ Import</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(event)" />
     </div>
   </header>
 
-  <main class="container main-shell">
-    <section class="launcher-card" aria-label="Multi-Tab Wall Controls">
-      <div class="field-group">
-        <label for="targetUrlInput">Target URL (Website, YouTube, Instagram, Facebook, or Video Link)</label>
-        <div class="url-row">
-          <input
-            type="url"
-            id="targetUrlInput"
-            value="https://growglobalsocial.vercel.app/"
-            placeholder="https://example.com or https://www.youtube.com/watch?v=..."
-          />
-          <button type="button" id="presetYtBtn" class="ghost-btn" title="Load sample YouTube URL">YT Sample</button>
-          <button type="button" id="presetIgBtn" class="ghost-btn" title="Load sample Instagram URL">IG Sample</button>
-          <button type="button" id="presetFbBtn" class="ghost-btn" title="Load sample Facebook URL">FB Sample</button>
-        </div>
-      </div>
-
-      <div class="controls-grid">
-        <div class="field-group">
-          <label for="tabCountInput">Wall Slots / Tabs (1 – 1000)</label>
-          <input type="number" id="tabCountInput" min="1" max="1000" value="12" />
-        </div>
-
-        <div class="field-group">
-          <label for="columnsSelect">Grid Columns</label>
-          <select id="columnsSelect">
-            <option value="1">1 Column</option>
-            <option value="2">2 Columns</option>
-            <option value="3">3 Columns</option>
-            <option value="4" selected>4 Columns</option>
-          </select>
-        </div>
-
-        <div class="field-group">
-          <label for="renderModeSelect">Slot Render Mode</label>
-          <select id="renderModeSelect">
-            <option value="smart" selected>Smart Embed + Direct Fallback (Recommended)</option>
-            <option value="cards">Lightweight Cards Only (Fastest for 100–1000)</option>
-          </select>
-        </div>
-
-        <div class="action-buttons">
-          <button type="button" id="launchBtn" class="btn-primary">&#9654; Launch Wall</button>
-          <button type="button" id="loadAllEmbedsBtn" class="btn-success" title="Load iframes only for visible slots (capped safely)">Load Visible Frames</button>
-          <button type="button" id="clearBtn" class="btn-danger">Clear</button>
-        </div>
-      </div>
-
-      <div class="options-bar">
-        <label class="checkbox-label">
-          <input type="checkbox" id="autoMuteCheck" checked />
-          <span>Auto-Mute / Safe Frame Mode (Recommended for multiple slots)</span>
-        </label>
-        <div class="status-text" id="wallStatusText">Ready. Choose URL, slot count (up to 1000), and click Launch Wall.</div>
-      </div>
-    </section>
-
-    <section class="info-strip">
-      <article class="info-box">
-        <h3>YouTube Videos &amp; Shorts</h3>
-        <p>Automatically converts <code>youtu.be</code>, <code>watch?v=</code>, <code>/shorts/</code>, and <code>/embed/</code> URLs into an embeddable player when allowed by the creator.</p>
-      </article>
-      <article class="info-box">
-        <h3>Instagram, Facebook &amp; External Sites</h3>
-        <p>Many social platforms and websites block third-party <code>iframe</code> embedding via headers or login rules; each slot provides one-click <strong>Open Direct</strong> &amp; <strong>Load Frame</strong> controls.</p>
-      </article>
-      <article class="info-box">
-        <h3>1000-Slot Stability</h3>
-        <p>Creating 1000 live browser iframes at once can freeze mobile/desktop memory. Slots render in clean batches with pagination and on-demand frame loading.</p>
-      </article>
-    </section>
-
-    <section id="wallGrid" class="wall-grid cols-4" aria-label="Generated Multi-Tab Wall"></section>
-
-    <div class="pagination-bar" id="paginationBar">
-      <button type="button" id="showMoreBtn" class="btn-primary hidden">Show More Slots</button>
+  <section class="subbar">
+    <div class="shortcuts" id="shortcutsBar"></div>
+    <div class="stats-bar">
+      <button class="sec" style="padding:4px 10px; font-size:0.76rem;" onclick="saveCurrentShortcut()">⭐ Save Shortcut</button>
+      <button class="sec" style="padding:4px 10px; font-size:0.76rem;" onclick="clearAllTabs()">🗑 Clear Tabs</button>
+      <span class="pill" id="tabCounter">Open: 0 / 12</span>
     </div>
-  </main>
+  </section>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <span>MultiTabMax Smart Wall &bull; Built for clean multi-link &amp; media organization.</span>
-      <span>Note: External embedding depends on each target platform's frame/CORS policy.</span>
+  <!-- Collapsible Saved Tab Library -->
+  <section id="savedPanel" class="drawer-panel">
+    <div class="drawer-head">
+      <div><strong>Saved Tab Library</strong> <span class="pill" id="savedCount">0 / 1000</span></div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <input id="savedSearch" type="text" placeholder="Search saved URLs..." oninput="renderSavedTabs()" />
+        <button class="danger" style="padding:6px 10px;" onclick="clearSavedLibrary()">Clear All</button>
+        <button class="sec" style="padding:6px 10px;" onclick="togglePanel('savedPanel')">Close</button>
+      </div>
     </div>
-  </footer>
+    <div id="savedList" class="saved-grid"></div>
+  </section>
 
-  <script src="app.js"></script>
+  <!-- Collapsible Safe Site Check -->
+  <section id="safeTestPanel" class="drawer-panel">
+    <div class="drawer-head">
+      <div><strong>Safe Site Check</strong> <span class="pill">Same-origin health check</span></div>
+      <button class="sec" style="padding:5px 10px;" onclick="togglePanel('safeTestPanel')">Close</button>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+      <input id="testUrl" type="text" placeholder="Enter your own hosted page URL (same origin)" style="flex:1; min-width:220px;" />
+      <select id="testRuns">
+        <option value="1">1 check</option>
+        <option value="3">3 checks</option>
+        <option value="5">5 checks</option>
+        <option value="10">10 checks (max)</option>
+      </select>
+      <button class="success" onclick="runSafeTest()">Run Safe Test</button>
+      <span class="pill" id="testResult">No test run</span>
+    </div>
+  </section>
+
+  <main class="grid" id="phoneGrid"></main>
+
+  <div class="toast" id="toast">Ready</div>
+
+  <script>
+    const STORAGE_KEY = 'multitap_browser_workspace_v4';
+    const MAX_SAVED_TABS = 1000;
+    const MAX_OPEN_TABS = 12;
+
+    let phones = [];
+    let savedTabs = [];
+    let frameObserver = null;
+    let reloadTimer = null;
+
+    let shortcuts = [
+      { name: '🎬 Saved YT Short', url: 'https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA' },
+      { name: '🌐 Wikipedia', url: 'https://en.m.wikipedia.org' },
+      { name: '📰 Hacker News', url: 'https://news.ycombinator.com' }
+    ];
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    function escapeAttr(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function togglePanel(panelId) {
+      const panel = document.getElementById(panelId);
+      if (!panel) return;
+      panel.classList.toggle('open');
+      if (panelId === 'savedPanel' && panel.classList.contains('open')) {
+        renderSavedTabs();
+      }
+    }
+
+    function detectModeAndConvert(rawUrl) {
+      let url = (rawUrl || '').trim();
+      if (!url) return { src: 'about:blank', mode: 'Blank' };
+
+      // Plain search query
+      if (!url.includes('.') && !/^https?:\/\//i.test(url)) {
+        return {
+          src: `https://www.bing.com/search?q=${encodeURIComponent(url)}`,
+          mode: 'Web Search'
+        };
+      }
+
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+      try {
+        const u = new URL(url);
+        const host = u.hostname.toLowerCase();
+
+        // YouTube, Shorts, Live, Embed
+        if (host.includes('youtube.com') || host.includes('youtu.be')) {
+          let videoId = '';
+          if (u.pathname.includes('/shorts/')) {
+            videoId = u.pathname.split('/shorts/')[1].split('/')[0];
+          } else if (u.pathname.includes('/live/')) {
+            videoId = u.pathname.split('/live/')[1].split('/')[0];
+          } else if (host.includes('youtu.be')) {
+            videoId = u.pathname.slice(1).split('/')[0];
+          } else if (u.pathname.includes('/embed/')) {
+            videoId = u.pathname.split('/embed/')[1].split('/')[0];
+          } else {
+            videoId = u.searchParams.get('v');
+          }
+          if (videoId) {
+            return {
+              src: `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0`,
+              mode: 'YouTube Embed'
+            };
+          }
+        }
+
+        // Instagram Reels / Posts / TV
+        if (host.includes('instagram.com')) {
+          const match = u.pathname.match(/\/(reel|p|tv)\/([^\/]+)/);
+          if (match) {
+            return {
+              src: `https://www.instagram.com/${match[1]}/${match[2]}/embed`,
+              mode: 'Instagram Embed'
+            };
+          }
+        }
+
+        // Facebook Videos / Reels
+        if (host.includes('facebook.com') || host.includes('fb.watch')) {
+          return {
+            src: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&autoplay=true`,
+            mode: 'Facebook Embed'
+          };
+        }
+
+        // TikTok
+        if (host.includes('tiktok.com')) {
+          const tkMatch = u.pathname.match(/\/video\/(\d+)/);
+          if (tkMatch) {
+            return {
+              src: `https://www.tiktok.com/embed/v2/${tkMatch[1]}`,
+              mode: 'TikTok Embed'
+            };
+          }
+        }
+
+        // Vimeo
+        if (host.includes('vimeo.com')) {
+          const vMatch = u.pathname.match(/\/(\d+)/);
+          if (vMatch) {
+            return {
+              src: `https://player.vimeo.com/video/${vMatch[1]}?autoplay=1&muted=1`,
+              mode: 'Vimeo Embed'
+            };
+          }
+        }
+
+        // Dailymotion
+        if (host.includes('dailymotion.com') || host.includes('dai.ly')) {
+          let dmId = host.includes('dai.ly')
+            ? u.pathname.slice(1).split('/')[0]
+            : (u.pathname.split('/video/')[1] || '').split('_')[0];
+          if (dmId) {
+            return {
+              src: `https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&mute=1`,
+              mode: 'Dailymotion Embed'
+            };
+          }
+        }
+      } catch (e) {}
+
+      return { src: url, mode: 'Web Frame' };
+    }
+
+    function addToSavedLibrary(url) {
+      if (!url || url === 'about:blank') return;
+      if (savedTabs.some(t => t.url === url)) return;
+      if (savedTabs.length >= MAX_SAVED_TABS) return;
+      savedTabs.unshift({
+        id: 's' + Date.now() + Math.random().toString(16).slice(2, 6),
+        url,
+        title: url
+      });
+    }
+
+    function updateCounters() {
+      document.getElementById('tabCounter').textContent = `Open: ${phones.length} / ${MAX_OPEN_TABS}`;
+      const badge = document.getElementById('savedBadge');
+      if (badge) badge.textContent = savedTabs.length;
+      const count = document.getElementById('savedCount');
+      if (count) count.textContent = `${savedTabs.length} / ${MAX_SAVED_TABS}`;
+    }
+
+    function saveState() {
+      try {
+        const state = {
+          openTabs: phones.map(p => ({ url: p.url })),
+          savedTabs: savedTabs.slice(0, MAX_SAVED_TABS),
+          shortcuts,
+          theme: document.getElementById('themeSelect').value,
+          size: document.getElementById('sizeSelect').value,
+          device: document.getElementById('deviceSelect').value
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        updateCounters();
+      } catch (e) {
+        showToast('Storage full. Export JSON backup and clear old tabs.');
+      }
+    }
+
+    function renderShortcuts() {
+      const bar = document.getElementById('shortcutsBar');
+      bar.innerHTML = `<span style="font-size:0.76rem; color:var(--muted); font-weight:600; white-space:nowrap;">Quick Launch:</span>`;
+      shortcuts.forEach((sc, idx) => {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.innerHTML = `<span>${escapeAttr(sc.name)}</span><span class="del-chip" title="Remove">×</span>`;
+        chip.onclick = (e) => {
+          if (e.target.classList.contains('del-chip')) {
+            shortcuts.splice(idx, 1);
+            renderShortcuts();
+            saveState();
+            return;
+          }
+          document.getElementById('globalUrl').value = sc.url;
+          openAllScreens();
+        };
+        bar.appendChild(chip);
+      });
+    }
+
+    function saveCurrentShortcut() {
+      const url = document.getElementById('globalUrl').value.trim();
+      if (!url) {
+        showToast('Paste a URL in the top bar first');
+        return;
+      }
+      const name = prompt('Shortcut Name:', 'Custom Link');
+      if (!name) return;
+      shortcuts.push({ name: '🔗 ' + name.trim(), url });
+      renderShortcuts();
+      saveState();
+      showToast('Shortcut saved!');
+    }
+
+    function addPhone(initialUrl = 'https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA', silent = false, fromLibrary = false) {
+      if (phones.length >= MAX_OPEN_TABS) {
+        showToast(`Max ${MAX_OPEN_TABS} live tabs allowed for smooth speed. Save up to ${MAX_SAVED_TABS} in Library.`);
+        return;
+      }
+
+      const url = String(initialUrl || 'about:blank').trim();
+      if (!fromLibrary) addToSavedLibrary(url);
+
+      const id = Date.now() + Math.floor(Math.random() * 100000);
+      const tabNum = phones.length + 1;
+      phones.push({ id, url });
+
+      const { src, mode } = detectModeAndConvert(url);
+      const deviceMode = document.getElementById('deviceSelect').value || 'mobile';
+
+      const card = document.createElement('div');
+      card.className = `phone-frame device-${deviceMode}`;
+      card.id = `phone-${id}`;
+
+      card.innerHTML = `
+        <div class="phone-status">
+          <span>Tap #${tabNum}</span>
+          <div class="notch"></div>
+          <span>5G • Active</span>
+        </div>
+        <div class="phone-bar">
+          <input type="text" id="input-${id}" value="${escapeAttr(url)}" onkeydown="if(event.key==='Enter') loadPhone(${id})" />
+          <button onclick="loadPhone(${id})">Go</button>
+          <button class="sec" title="Reload" onclick="reloadPhone(${id})">↻</button>
+          <button class="sec" title="Fullscreen" onclick="toggleExpand(${id})">⛶</button>
+          <button class="sec" title="Open in New Tab" onclick="openExternal(${id})">↗</button>
+          <button class="danger" title="Close" onclick="removePhone(${id})">✕</button>
+        </div>
+        <div class="phone-screen">
+          <div id="lazy-${id}" class="lazy-placeholder">
+            <span>Ready to load preview</span>
+            <button class="sec" onclick="forceLoad(${id})">▶ Load Now</button>
+          </div>
+          <iframe id="frame-${id}" data-src="${escapeAttr(src)}" loading="lazy" title="Tap ${tabNum}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="display:none"></iframe>
+        </div>
+        <div class="info-bar">
+          <span>Mode: <span class="badge-mode" id="mode-${id}">${mode}</span></span>
+          <span>Multi Tap v4</span>
+        </div>
+      `;
+
+      document.getElementById('phoneGrid').appendChild(card);
+      observeFrame(id);
+      updateCounters();
+
+      if (!silent) {
+        saveState();
+        renderSavedTabs();
+        showToast(`Tap #${tabNum} added`);
+      }
+    }
+
+    function observeFrame(id) {
+      const card = document.getElementById(`phone-${id}`);
+      if (!card) return;
+      if (!frameObserver) {
+        frameObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const frame = entry.target.querySelector('iframe');
+              if (frame && !frame.getAttribute('src')) {
+                forceLoad(Number(frame.id.replace('frame-', '')));
+              }
+            }
+          });
+        }, { rootMargin: '300px' });
+      }
+      frameObserver.observe(card);
+    }
+
+    function forceLoad(id) {
+      const frame = document.getElementById(`frame-${id}`);
+      if (!frame) return;
+      const targetSrc = frame.dataset.src || 'about:blank';
+      frame.setAttribute('src', targetSrc);
+      frame.style.display = 'block';
+      const placeholder = document.getElementById(`lazy-${id}`);
+      if (placeholder) placeholder.style.display = 'none';
+    }
+
+    function loadPhone(id) {
+      const input = document.getElementById(`input-${id}`);
+      const frame = document.getElementById(`frame-${id}`);
+      const modeEl = document.getElementById(`mode-${id}`);
+      const url = input.value.trim();
+      const phone = phones.find(p => p.id === id);
+      if (phone) phone.url = url;
+
+      const { src, mode } = detectModeAndConvert(url);
+      frame.dataset.src = src;
+      if (modeEl) modeEl.textContent = mode;
+
+      // Immediately load when user explicitly triggers Go / Open All
+      forceLoad(id);
+
+      addToSavedLibrary(url);
+      saveState();
+      renderSavedTabs();
+    }
+
+    function reloadPhone(id) {
+      const frame = document.getElementById(`frame-${id}`);
+      if (!frame) return;
+      if (!frame.getAttribute('src')) {
+        forceLoad(id);
+      } else {
+        frame.src = frame.src;
+      }
+    }
+
+    function reloadAll() {
+      phones.forEach(p => reloadPhone(p.id));
+      showToast('All open tabs reloaded');
+    }
+
+    function toggleExpand(id) {
+      const el = document.getElementById(`phone-${id}`);
+      if (el) el.classList.toggle('expanded');
+    }
+
+    function openExternal(id) {
+      const input = document.getElementById(`input-${id}`);
+      let url = input.value.trim();
+      if (!url) return;
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+      window.open(url, '_blank');
+    }
+
+    function removePhone(id) {
+      phones = phones.filter(p => p.id !== id);
+      const el = document.getElementById(`phone-${id}`);
+      if (el) el.remove();
+      updateCounters();
+      saveState();
+    }
+
+    function clearAllTabs() {
+      if (!phones.length) return;
+      document.getElementById('phoneGrid').innerHTML = '';
+      phones = [];
+      updateCounters();
+      saveState();
+      showToast('All open tabs cleared');
+    }
+
+    function addMultiple(count) {
+      const currentGlobal = document.getElementById('globalUrl').value.trim() || 'https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA';
+      let added = 0;
+      for (let i = 0; i < count; i++) {
+        if (phones.length < MAX_OPEN_TABS) {
+          addPhone(currentGlobal, true);
+          added++;
+        }
+      }
+      saveState();
+      renderSavedTabs();
+      showToast(added ? `Added ${added} new tabs` : `Max ${MAX_OPEN_TABS} open tabs reached`);
+    }
+
+    function openAllScreens() {
+      const url = document.getElementById('globalUrl').value.trim();
+      if (!url) {
+        showToast('Enter a link or search term first');
+        return;
+      }
+      if (phones.length === 0) addPhone(url, true);
+      phones.forEach(p => {
+        const inp = document.getElementById(`input-${p.id}`);
+        if (inp) inp.value = url;
+        loadPhone(p.id);
+      });
+      showToast('Loaded across all tabs');
+    }
+
+    function renderSavedTabs() {
+      const list = document.getElementById('savedList');
+      if (!list) return;
+      const q = (document.getElementById('savedSearch')?.value || '').toLowerCase();
+      updateCounters();
+      list.innerHTML = '';
+
+      savedTabs.forEach((tab, index) => {
+        if (q && !tab.url.toLowerCase().includes(q) && !(tab.title || '').toLowerCase().includes(q)) return;
+        const item = document.createElement('div');
+        item.className = 'saved-item';
+
+        const label = document.createElement('span');
+        label.className = 'saved-label';
+        label.textContent = `${index + 1}. ${tab.title || tab.url}`;
+        label.title = tab.url;
+
+        const btnWrap = document.createElement('div');
+        btnWrap.style.display = 'flex';
+        btnWrap.style.gap = '5px';
+
+        const openBtn = document.createElement('button');
+        openBtn.style.padding = '4px 8px';
+        openBtn.style.fontSize = '0.74rem';
+        openBtn.textContent = 'Open';
+        openBtn.onclick = () => addPhone(tab.url, false, true);
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'danger';
+        delBtn.style.padding = '4px 8px';
+        delBtn.style.fontSize = '0.74rem';
+        delBtn.textContent = '×';
+        delBtn.onclick = () => {
+          savedTabs.splice(index, 1);
+          saveState();
+          renderSavedTabs();
+        };
+
+        btnWrap.append(openBtn, delBtn);
+        item.append(label, btnWrap);
+        list.appendChild(item);
+      });
+
+      if (!list.children.length) {
+        list.innerHTML = `<span style="color:var(--muted); font-size:0.8rem;">No saved tabs found.</span>`;
+      }
+    }
+
+    function clearSavedLibrary() {
+      if (!savedTabs.length) return;
+      if (!confirm('Clear all saved tabs from library?')) return;
+      savedTabs = [];
+      saveState();
+      renderSavedTabs();
+      showToast('Saved library cleared');
+    }
+
+    function setAutoReload() {
+      if (reloadTimer) clearInterval(reloadTimer);
+      const sec = parseInt(document.getElementById('autoReload').value, 10);
+      if (sec > 0) {
+        reloadTimer = setInterval(() => reloadAll(), sec * 1000);
+        showToast(`Auto-reload set: ${sec}s`);
+      } else {
+        showToast('Auto-reload turned off');
+      }
+    }
+
+    function changeTheme() {
+      const val = document.getElementById('themeSelect').value;
+      document.body.className = val === 'default' ? '' : `theme-${val}`;
+      saveState();
+    }
+
+    function changeGridSize() {
+      const val = document.getElementById('sizeSelect').value;
+      const grid = document.getElementById('phoneGrid');
+      grid.className = 'grid' + (val === 'normal' ? '' : ` size-${val}`);
+      saveState();
+    }
+
+    function changeDevicePreview() {
+      const mode = document.getElementById('deviceSelect').value;
+      document.querySelectorAll('.phone-frame').forEach(card => {
+        card.classList.remove('device-mobile', 'device-tablet', 'device-desktop');
+        card.classList.add(`device-${mode}`);
+      });
+      saveState();
+      showToast(`${mode[0].toUpperCase() + mode.slice(1)} frame preview active`);
+    }
+
+    async function runSafeTest() {
+      const raw = document.getElementById('testUrl').value.trim();
+      const out = document.getElementById('testResult');
+      if (!raw) {
+        showToast('Enter your own hosted URL');
+        return;
+      }
+      let target;
+      try {
+        target = new URL(/^https?:\/\//i.test(raw) ? raw : 'https://' + raw);
+      } catch (e) {
+        showToast('Enter a valid URL');
+        return;
+      }
+      if (target.origin !== location.origin) {
+        out.textContent = 'Blocked: same-origin only';
+        showToast('Safe check only works on the same hosted domain');
+        return;
+      }
+      const runs = Math.min(10, Math.max(1, Number(document.getElementById('testRuns').value) || 1));
+      out.textContent = 'Testing...';
+      let ok = 0, totalMs = 0;
+      for (let i = 0; i < runs; i++) {
+        const started = performance.now();
+        try {
+          const response = await fetch(target.href, { cache: 'no-store', credentials: 'same-origin' });
+          totalMs += performance.now() - started;
+          if (response.ok) ok++;
+        } catch (e) {
+          totalMs += performance.now() - started;
+        }
+      }
+      out.textContent = `${ok}/${runs} OK • avg ${Math.round(totalMs / runs)} ms`;
+    }
+
+    function exportBackup() {
+      const data = {
+        app: "Multi Tap Browser",
+        version: "4.0",
+        exportedAt: new Date().toISOString(),
+        openTabs: phones.map((p, i) => ({ id: i + 1, url: p.url })),
+        tabs: savedTabs.slice(0, MAX_SAVED_TABS),
+        customShortcuts: shortcuts.map(s => [s.url, s.name, s.url]),
+        theme: document.getElementById('themeSelect').value,
+        device: document.getElementById('deviceSelect').value
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'multitap-workspace-backup.json';
+      a.click();
+      showToast('Backup JSON downloaded');
+    }
+
+    function importBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          document.getElementById('phoneGrid').innerHTML = '';
+          phones = [];
+
+          const importedList = Array.isArray(data.tabs) ? data.tabs : [];
+          savedTabs = importedList.slice(0, MAX_SAVED_TABS).map(t => ({
+            id: t.id || ('s' + Math.random().toString(16).slice(2)),
+            url: t.url || 'https://en.m.wikipedia.org',
+            title: t.title || t.url
+          }));
+
+          const toOpen = Array.isArray(data.openTabs) && data.openTabs.length ? data.openTabs : savedTabs;
+          if (toOpen.length) {
+            toOpen.slice(0, MAX_OPEN_TABS).forEach(t => addPhone(t.url, true, true));
+          } else {
+            addPhone(undefined, true);
+          }
+
+          if (Array.isArray(data.customShortcuts) && data.customShortcuts.length) {
+            data.customShortcuts.forEach(sc => {
+              const scUrl = sc[2] || sc[0];
+              const scName = sc[1] || 'Saved Link';
+              if (scUrl && !shortcuts.some(s => s.url === scUrl)) {
+                shortcuts.push({ name: scName.startsWith('🔗') ? scName : '🔗 ' + scName, url: scUrl });
+              }
+            });
+            renderShortcuts();
+          }
+
+          if (data.theme) {
+            document.getElementById('themeSelect').value = data.theme;
+            changeTheme();
+          }
+
+          saveState();
+          renderSavedTabs();
+          showToast('Workspace imported!');
+        } catch (err) {
+          alert('Invalid JSON backup file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Boot
+    (function init() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved) {
+          if (saved.theme) {
+            document.getElementById('themeSelect').value = saved.theme;
+            document.body.className = saved.theme === 'default' ? '' : `theme-${saved.theme}`;
+          }
+          if (saved.size) {
+            document.getElementById('sizeSelect').value = saved.size;
+            const grid = document.getElementById('phoneGrid');
+            grid.className = 'grid' + (saved.size === 'normal' ? '' : ` size-${saved.size}`);
+          }
+          if (saved.device) {
+            document.getElementById('deviceSelect').value = saved.device;
+          }
+          if (Array.isArray(saved.shortcuts) && saved.shortcuts.length) {
+            shortcuts = saved.shortcuts;
+          }
+          if (Array.isArray(saved.savedTabs)) {
+            savedTabs = saved.savedTabs.slice(0, MAX_SAVED_TABS);
+          }
+          renderShortcuts();
+
+          const initialOpen = Array.isArray(saved.openTabs) && saved.openTabs.length ? saved.openTabs : savedTabs.slice(0, 2);
+          if (initialOpen.length) {
+            initialOpen.slice(0, MAX_OPEN_TABS).forEach(t => addPhone(t.url, true, true));
+            updateCounters();
+            return;
+          }
+        }
+      } catch (e) {}
+
+      renderShortcuts();
+      addPhone('https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA', true);
+      addPhone('https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA', true);
+      saveState();
+    })();
+  </script>
 </body>
 </html>
