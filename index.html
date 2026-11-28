@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multi Tap Browser — Pro Workspace v4.0</title>
+  <title>Multi Tap Browser v5.0 — Unlimited Tab Workspace</title>
   <style>
     :root {
-      --bg-1: #070b14;
+      --bg-1: #060a14;
       --bg-2: #0f172a;
-      --panel: rgba(15, 23, 42, 0.88);
+      --panel: rgba(15, 23, 42, 0.92);
       --card: #111827;
+      --card-2: #162033;
       --border: rgba(148, 163, 184, 0.18);
       --text: #f8fafc;
       --muted: #94a3b8;
@@ -19,14 +20,14 @@
       --success: #10b981;
       --danger: #ef4444;
       --warning: #f59e0b;
-      --radius: 14px;
     }
 
     body.theme-emerald {
       --bg-1: #04130f;
       --bg-2: #09241c;
-      --panel: rgba(9, 36, 28, 0.9);
+      --panel: rgba(9, 36, 28, 0.92);
       --card: #0c2c23;
+      --card-2: #113a2e;
       --accent: #10b981;
       --accent-2: #2dd4bf;
       --accent-glow: rgba(16, 185, 129, 0.35);
@@ -34,9 +35,10 @@
 
     body.theme-sunset {
       --bg-1: #160913;
-      --bg-2: #240f1f;
-      --panel: rgba(36, 15, 31, 0.9);
+      --bg-2: #261020;
+      --panel: rgba(38, 16, 32, 0.92);
       --card: #281123;
+      --card-2: #361730;
       --accent: #ec4899;
       --accent-2: #f97316;
       --accent-glow: rgba(236, 72, 153, 0.35);
@@ -45,14 +47,15 @@
     body.theme-light {
       --bg-1: #eef2ff;
       --bg-2: #f8fafc;
-      --panel: rgba(255, 255, 255, 0.94);
+      --panel: rgba(255, 255, 255, 0.96);
       --card: #ffffff;
+      --card-2: #f1f5f9;
       --border: rgba(15, 23, 42, 0.12);
       --text: #0f172a;
       --muted: #475569;
       --accent: #4f46e5;
       --accent-2: #0ea5e9;
-      --accent-glow: rgba(79, 70, 229, 0.22);
+      --accent-glow: rgba(79, 70, 229, 0.2);
     }
 
     * {
@@ -71,22 +74,21 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* Glass Header */
-    .topbar {
+    /* Top Brand Bar */
+    .navbar {
       background: var(--panel);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 18px;
+      padding: 12px 16px;
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
       position: sticky;
       top: 0;
-      z-index: 100;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+      z-index: 120;
     }
 
     .brand-wrap {
@@ -102,16 +104,15 @@
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       display: grid;
       place-items: center;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       color: #fff;
-      box-shadow: 0 4px 16px var(--accent-glow);
-      font-weight: 800;
+      font-weight: 900;
+      box-shadow: 0 4px 14px var(--accent-glow);
     }
 
     .brand-title {
-      font-size: 1.12rem;
+      font-size: 1.1rem;
       font-weight: 800;
-      letter-spacing: 0.2px;
       background: linear-gradient(90deg, var(--text), var(--accent-2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -121,70 +122,93 @@
       font-size: 0.72rem;
       color: var(--muted);
       display: block;
-      margin-top: -2px;
     }
 
-    .controls {
+    .nav-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 7px;
       align-items: center;
-      flex: 1;
-      justify-content: flex-end;
     }
 
-    .url-box {
-      display: flex;
-      align-items: center;
-      flex: 1;
-      min-width: 230px;
-      max-width: 440px;
-      background: var(--bg-1);
+    /* Hero Launcher Card (Link + Tab Count) */
+    .launcher-wrap {
+      padding: 14px 16px 6px;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .launcher-card {
+      background: var(--panel);
       border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .launcher-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .input-group.compact {
+      flex: 0 1 175px;
+      min-width: 140px;
+    }
+
+    .input-group label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"], input[type="number"], select {
+      background: var(--bg-1);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
       border-radius: 10px;
-      padding: 3px 4px 3px 12px;
+      outline: none;
+      font-size: 0.88rem;
+      width: 100%;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .url-box:focus-within {
+    input:focus, select:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .url-box input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text);
-      outline: none;
-      font-size: 0.88rem;
-      padding: 6px 4px;
-      min-width: 0;
-    }
-
-    select, input[type="text"] {
-      background: var(--bg-1);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 7px 10px;
-      border-radius: 9px;
-      outline: none;
-      font-size: 0.82rem;
     }
 
     button {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: #fff;
       border: none;
-      padding: 8px 12px;
-      border-radius: 9px;
-      font-weight: 600;
-      font-size: 0.82rem;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.84rem;
       cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      justify-content: center;
+      gap: 6px;
       white-space: nowrap;
     }
 
@@ -193,12 +217,10 @@
       box-shadow: 0 6px 16px var(--accent-glow);
     }
 
-    button:active {
-      transform: translateY(0);
-    }
+    button:active { transform: translateY(0); }
 
     button.sec {
-      background: var(--card);
+      background: var(--card-2);
       color: var(--text);
       border: 1px solid var(--border);
       box-shadow: none;
@@ -209,19 +231,86 @@
       box-shadow: none;
     }
 
-    button.success {
-      background: linear-gradient(135deg, #059669, #10b981);
+    button.success { background: linear-gradient(135deg, #059669, #10b981); }
+    button.danger { background: linear-gradient(135deg, #dc2626, #ef4444); }
+    button.sm { padding: 6px 10px; font-size: 0.77rem; border-radius: 8px; }
+
+    .launch-btn {
+      padding: 11px 22px;
+      font-size: 0.92rem;
+      align-self: flex-end;
+      height: 41px;
     }
 
-    button.danger {
-      background: linear-gradient(135deg, #dc2626, #ef4444);
+    /* Quick Count Chips */
+    .quick-counts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
     }
 
-    /* Subbar */
-    .subbar {
-      background: rgba(0, 0, 0, 0.16);
-      border-bottom: 1px solid var(--border);
-      padding: 8px 18px;
+    .q-chip {
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+
+    .q-chip:hover, .q-chip.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* Adsterra Clean Banner Slot */
+    .ad-slot-wrap {
+      max-width: 1440px;
+      width: 100%;
+      margin: 8px auto 0;
+      padding: 0 16px;
+    }
+
+    .ad-slot {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 3px;
+      padding: 8px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .ad-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+    }
+
+    /* Batch / Pagination Bar */
+    .pager-bar {
+      max-width: 1440px;
+      width: 100%;
+      margin: 10px auto 0;
+      padding: 0 16px;
+    }
+
+    .pager-inner {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
@@ -229,98 +318,87 @@
       justify-content: space-between;
     }
 
-    .shortcuts {
+    .pager-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pill {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      padding: 5px 11px;
+      border-radius: 999px;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.77rem;
+    }
+
+    .pill.accent {
+      background: rgba(99, 102, 241, 0.18);
+      border-color: var(--accent);
+      color: var(--accent-2);
+    }
+
+    /* Shortcuts Row */
+    .shortcuts-row {
       display: flex;
       gap: 7px;
       overflow-x: auto;
       align-items: center;
-      flex: 1;
-      padding-bottom: 2px;
+      padding-top: 2px;
     }
 
     .chip {
-      background: var(--card);
+      background: var(--card-2);
       color: var(--text);
       padding: 5px 11px;
       border-radius: 999px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       cursor: pointer;
       white-space: nowrap;
       border: 1px solid var(--border);
-      transition: 0.2s;
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .chip:hover {
-      border-color: var(--accent-2);
-      transform: translateY(-1px);
-    }
+    .chip:hover { border-color: var(--accent-2); }
+    .chip .del-chip { color: var(--muted); font-weight: bold; }
+    .chip .del-chip:hover { color: var(--danger); }
 
-    .chip .del-chip {
-      color: var(--muted);
-      font-weight: bold;
-      margin-left: 2px;
-    }
-
-    .chip .del-chip:hover {
-      color: var(--danger);
-    }
-
-    .stats-bar {
-      display: flex;
-      gap: 7px;
-      align-items: center;
-      flex-wrap: wrap;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .pill {
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      border-radius: 999px;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.76rem;
-    }
-
-    /* Collapsible Panels */
+    /* Collapsible Saved Panel */
     .drawer-panel {
       display: none;
+      max-width: 1440px;
+      width: 100%;
+      margin: 10px auto 0;
+      padding: 0 16px;
+    }
+
+    .drawer-panel.open { display: block; }
+
+    .drawer-box {
       background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .drawer-panel.open {
-      display: flex;
-    }
-
-    .drawer-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
     .saved-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 8px;
-      width: 100%;
-      max-height: 250px;
+      max-height: 230px;
       overflow-y: auto;
     }
 
     .saved-item {
-      background: var(--card);
+      background: var(--card-2);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 7px 10px;
@@ -336,59 +414,53 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       flex: 1;
-      color: var(--text);
     }
 
-    /* Grid Layout */
+    /* Screen Grid */
     .grid {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 18px;
-      padding: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 16px;
+      padding: 16px;
       flex: 1;
       align-items: start;
     }
 
-    .grid.size-compact {
-      grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-    }
+    .grid.size-compact { grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); }
+    .grid.size-wide { grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); }
 
-    .grid.size-wide {
-      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
-    }
-
-    /* Mobile Frame Card */
+    /* Phone Card */
     .phone-frame {
       background: var(--card);
       border: 2px solid var(--border);
-      border-radius: 26px;
+      border-radius: 24px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 600px;
+      height: 560px;
       width: 100%;
       margin-inline: auto;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
-      transition: border-color 0.2s, max-width 0.25s ease;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.34);
+      transition: border-color 0.2s, max-width 0.2s;
       position: relative;
     }
 
-    .phone-frame:hover {
-      border-color: var(--accent);
-    }
-
+    .phone-frame:hover { border-color: var(--accent); }
     .phone-frame.device-mobile { max-width: 410px; }
     .phone-frame.device-tablet { max-width: 740px; }
     .phone-frame.device-desktop { max-width: 100%; }
 
     .phone-frame.expanded {
       position: fixed;
-      inset: 14px;
+      inset: 12px;
       height: auto;
       max-width: none !important;
       z-index: 999;
-      border-radius: 18px;
-      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.78);
+      border-radius: 16px;
+      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.8);
     }
 
     .phone-status {
@@ -398,14 +470,13 @@
       justify-content: space-between;
       align-items: center;
       font-size: 0.73rem;
-      color: var(--text);
-      font-weight: 600;
+      font-weight: 700;
       border-bottom: 1px solid var(--border);
     }
 
     .notch {
-      width: 68px;
-      height: 11px;
+      width: 64px;
+      height: 10px;
       background: #020617;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -414,7 +485,7 @@
     .phone-bar {
       display: flex;
       gap: 5px;
-      padding: 7px 8px;
+      padding: 6px 8px;
       background: var(--panel);
       border-bottom: 1px solid var(--border);
       align-items: center;
@@ -422,15 +493,15 @@
 
     .phone-bar input {
       flex: 1;
-      padding: 6px 9px;
-      font-size: 0.8rem;
+      padding: 6px 8px;
+      font-size: 0.78rem;
       border-radius: 7px;
       min-width: 0;
     }
 
     .phone-bar button {
       padding: 6px 8px;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       border-radius: 7px;
     }
 
@@ -438,20 +509,6 @@
       flex: 1;
       background: #000;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .lazy-placeholder {
-      color: var(--muted);
-      padding: 20px;
-      text-align: center;
-      font-size: 0.84rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
     }
 
     iframe {
@@ -459,6 +516,7 @@
       height: 100%;
       border: none;
       background: #fff;
+      display: block;
     }
 
     .info-bar {
@@ -471,9 +529,14 @@
       border-top: 1px solid var(--border);
     }
 
-    .badge-mode {
-      color: var(--accent-2);
-      font-weight: 700;
+    .badge-mode { color: var(--accent-2); font-weight: 700; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 14px 16px 24px;
+      font-size: 0.76rem;
+      color: var(--muted);
     }
 
     /* Toast */
@@ -486,7 +549,7 @@
       padding: 10px 16px;
       border-radius: 10px;
       font-size: 0.84rem;
-      font-weight: 600;
+      font-weight: 700;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
       opacity: 0;
       pointer-events: none;
@@ -495,128 +558,191 @@
       z-index: 1000;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .toast.show { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 640px) {
-      .topbar { padding: 10px 12px; }
-      .subbar { padding: 8px 12px; }
-      .grid { padding: 12px; gap: 14px; }
-      .phone-frame { height: 520px; }
+      .navbar { padding: 10px 12px; }
+      .launcher-wrap, .ad-slot-wrap, .pager-bar, .drawer-panel { padding-inline: 10px; }
+      .grid { padding: 10px; gap: 12px; grid-template-columns: 1fr; }
+      .phone-frame { height: 500px; }
+      .launch-btn { width: 100%; }
     }
   </style>
 </head>
 <body>
 
-  <header class="topbar">
+  <!-- Top Navigation -->
+  <header class="navbar">
     <div class="brand-wrap">
       <div class="logo-badge">MT</div>
       <div>
         <div class="brand-title">Multi Tap Browser</div>
-        <span class="brand-sub">Pro Workspace v4.0 • Smart Video &amp; Multi-Screen</span>
+        <span class="brand-sub">Pro v5.0 • 1 to 1,00,000 Tabs Engine</span>
       </div>
     </div>
 
-    <div class="controls">
-      <div class="url-box">
-        <input type="text" id="globalUrl" placeholder="Paste YouTube, Shorts, IG Reel, FB Video or Web URL..." onkeydown="if(event.key==='Enter') openAllScreens()" />
-        <button onclick="openAllScreens()">▶ Open All</button>
-      </div>
-
-      <button class="success" onclick="addPhone()">+ Add Tab</button>
-      <button class="sec" onclick="addMultiple(2)">+2 Tabs</button>
-      <button class="sec" onclick="reloadAll()">↻ Reload</button>
-      <button class="sec" onclick="togglePanel('savedPanel')">☷ Saved (<span id="savedBadge">0</span>)</button>
-      <button class="sec" onclick="togglePanel('safeTestPanel')">⚡ Site Check</button>
-
-      <select id="deviceSelect" onchange="changeDevicePreview()" title="Device Preview">
-        <option value="mobile">📱 Mobile Frame</option>
-        <option value="tablet">▣ Tablet Frame</option>
-        <option value="desktop">💻 Full Width</option>
-      </select>
-
-      <select id="sizeSelect" onchange="changeGridSize()" title="Grid Density">
-        <option value="normal">Grid: Normal</option>
-        <option value="compact">Grid: Compact</option>
-        <option value="wide">Grid: Wide</option>
-      </select>
-
-      <select id="autoReload" onchange="setAutoReload()" title="Auto Reload Timer">
-        <option value="0">⏱ Reload: Off</option>
-        <option value="30">⏱ 30 sec</option>
-        <option value="60">⏱ 60 sec</option>
-        <option value="120">⏱ 2 min</option>
-      </select>
-
-      <select id="themeSelect" onchange="changeTheme()" title="Color Theme">
+    <div class="nav-actions">
+      <button class="sec sm" onclick="togglePanel('savedPanel')">☷ Saved (<span id="savedBadge">0</span>)</button>
+      <select id="themeSelect" onchange="changeTheme()" style="width:auto; padding:6px 9px; font-size:0.78rem;">
         <option value="default">🎨 Indigo Neon</option>
         <option value="emerald">🎨 Emerald Dark</option>
         <option value="sunset">🎨 Sunset Pink</option>
         <option value="light">🎨 Clean Light</option>
       </select>
-
-      <button class="sec" onclick="exportBackup()">⬇ Backup</button>
-      <button class="sec" onclick="document.getElementById('importFile').click()">⬆ Import</button>
+      <button class="sec sm" onclick="exportBackup()">⬇ Backup</button>
+      <button class="sec sm" onclick="document.getElementById('importFile').click()">⬆ Import</button>
       <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(event)" />
     </div>
   </header>
 
-  <section class="subbar">
-    <div class="shortcuts" id="shortcutsBar"></div>
-    <div class="stats-bar">
-      <button class="sec" style="padding:4px 10px; font-size:0.76rem;" onclick="saveCurrentShortcut()">⭐ Save Shortcut</button>
-      <button class="sec" style="padding:4px 10px; font-size:0.76rem;" onclick="clearAllTabs()">🗑 Clear Tabs</button>
-      <span class="pill" id="tabCounter">Open: 0 / 12</span>
+  <!-- ADSTERRA TOP BANNER SLOT (Non-intrusive) -->
+  <div class="ad-slot-wrap">
+    <div class="ad-slot" id="adsterra-top-banner">
+      <span class="ad-label">Advertisement • Adsterra Top Banner (728x90 / 320x50)</span>
+      <!-- PASTE YOUR ADSTERRA TOP BANNER SCRIPT BELOW THIS LINE -->
     </div>
-  </section>
+  </div>
 
-  <!-- Collapsible Saved Tab Library -->
-  <section id="savedPanel" class="drawer-panel">
-    <div class="drawer-head">
-      <div><strong>Saved Tab Library</strong> <span class="pill" id="savedCount">0 / 1000</span></div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-        <input id="savedSearch" type="text" placeholder="Search saved URLs..." oninput="renderSavedTabs()" />
-        <button class="danger" style="padding:6px 10px;" onclick="clearSavedLibrary()">Clear All</button>
-        <button class="sec" style="padding:6px 10px;" onclick="togglePanel('savedPanel')">Close</button>
+  <!-- Main Launcher: 1 Link + Custom Tab Count (1 to 1,00,000) -->
+  <section class="launcher-wrap">
+    <div class="launcher-card">
+      <div class="launcher-row">
+        <div class="input-group">
+          <label for="globalUrl">1. Paste Website / Video Link (YouTube, Shorts, IG Reel, FB, Web)</label>
+          <input type="text" id="globalUrl" placeholder="https://youtube.com/shorts/... or any website URL" onkeydown="if(event.key==='Enter') launchTabs()" />
+        </div>
+
+        <div class="input-group compact">
+          <label for="tabCountInput">2. How Many Tabs? (Up to 1,00,000)</label>
+          <input type="number" id="tabCountInput" min="1" max="100000" value="4" />
+        </div>
+
+        <div class="input-group compact">
+          <label for="perPageSelect">3. Live Per Page</label>
+          <select id="perPageSelect" onchange="changePerPage()">
+            <option value="2">2 Screens / Page</option>
+            <option value="4" selected>4 Screens / Page</option>
+            <option value="6">6 Screens / Page</option>
+            <option value="8">8 Screens / Page</option>
+            <option value="12">12 Screens / Page</option>
+          </select>
+        </div>
+
+        <button class="launch-btn" onclick="launchTabs()">🚀 Open Tabs</button>
+      </div>
+
+      <!-- One-Tap Presets up to 1 Lakh -->
+      <div class="quick-counts">
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:700;">Quick Select Tabs:</span>
+        <span class="q-chip" onclick="setTabCount(2)">2</span>
+        <span class="q-chip active" onclick="setTabCount(4)">4</span>
+        <span class="q-chip" onclick="setTabCount(6)">6</span>
+        <span class="q-chip" onclick="setTabCount(10)">10</span>
+        <span class="q-chip" onclick="setTabCount(25)">25</span>
+        <span class="q-chip" onclick="setTabCount(50)">50</span>
+        <span class="q-chip" onclick="setTabCount(100)">100</span>
+        <span class="q-chip" onclick="setTabCount(500)">500</span>
+        <span class="q-chip" onclick="setTabCount(1000)">1,000</span>
+        <span class="q-chip" onclick="setTabCount(10000)">10,000</span>
+        <span class="q-chip" onclick="setTabCount(100000)">1,00,000 (1 Lakh)</span>
+      </div>
+
+      <!-- Shortcuts & Quick Utilities -->
+      <div class="launcher-row" style="justify-content:space-between; border-top:1px solid var(--border); padding-top:10px;">
+        <div class="shortcuts-row" id="shortcutsBar"></div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="sec sm" onclick="saveCurrentShortcut()">⭐ Save Link</button>
+          <button class="success sm" onclick="addSingleTab()">+1 Tab</button>
+          <button class="sec sm" onclick="reloadCurrentPage()">↻ Reload Page</button>
+          <button class="danger sm" onclick="clearWorkspace()">🗑 Clear</button>
+        </div>
       </div>
     </div>
-    <div id="savedList" class="saved-grid"></div>
   </section>
 
-  <!-- Collapsible Safe Site Check -->
-  <section id="safeTestPanel" class="drawer-panel">
-    <div class="drawer-head">
-      <div><strong>Safe Site Check</strong> <span class="pill">Same-origin health check</span></div>
-      <button class="sec" style="padding:5px 10px;" onclick="togglePanel('safeTestPanel')">Close</button>
-    </div>
-    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-      <input id="testUrl" type="text" placeholder="Enter your own hosted page URL (same origin)" style="flex:1; min-width:220px;" />
-      <select id="testRuns">
-        <option value="1">1 check</option>
-        <option value="3">3 checks</option>
-        <option value="5">5 checks</option>
-        <option value="10">10 checks (max)</option>
-      </select>
-      <button class="success" onclick="runSafeTest()">Run Safe Test</button>
-      <span class="pill" id="testResult">No test run</span>
+  <!-- Collapsible Saved Library -->
+  <section id="savedPanel" class="drawer-panel">
+    <div class="drawer-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div><strong>Saved Link Library</strong> <span class="pill" id="savedCount">0 / 1000</span></div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+          <input id="savedSearch" type="text" placeholder="Search saved links..." style="width:200px; padding:6px 10px;" oninput="renderSavedTabs()" />
+          <button class="danger sm" onclick="clearSavedLibrary()">Clear Library</button>
+          <button class="sec sm" onclick="togglePanel('savedPanel')">Close</button>
+        </div>
+      </div>
+      <div id="savedList" class="saved-grid"></div>
     </div>
   </section>
 
+  <!-- Batch / Pagination & View Controls -->
+  <section class="pager-bar">
+    <div class="pager-inner">
+      <div class="pager-group">
+        <span class="pill accent" id="totalTabsBadge">Total Tabs: 0</span>
+        <span class="pill" id="pageStatusBadge">Page 1 / 1 (Showing 0–0)</span>
+        <button class="sec sm" id="prevBtn" onclick="prevPage()">◀ Prev</button>
+        <button class="sec sm" id="nextBtn" onclick="nextPage()">Next ▶</button>
+        <input type="number" id="jumpTabInput" placeholder="Jump Tab #" min="1" style="width:110px; padding:6px 8px; font-size:0.78rem;" onkeydown="if(event.key==='Enter') jumpToTab()" />
+        <button class="sec sm" onclick="jumpToTab()">Go</button>
+      </div>
+
+      <div class="pager-group">
+        <select id="deviceSelect" onchange="changeDevicePreview()" style="width:auto; padding:6px 8px; font-size:0.78rem;">
+          <option value="mobile">📱 Mobile Frame</option>
+          <option value="tablet">▣ Tablet Frame</option>
+          <option value="desktop">💻 Full Width</option>
+        </select>
+
+        <select id="sizeSelect" onchange="changeGridSize()" style="width:auto; padding:6px 8px; font-size:0.78rem;">
+          <option value="normal">Grid: Normal</option>
+          <option value="compact">Grid: Compact</option>
+          <option value="wide">Grid: Wide</option>
+        </select>
+
+        <select id="autoActionSelect" onchange="setAutoTimer()" style="width:auto; padding:6px 8px; font-size:0.78rem;">
+          <option value="0">⏱ Auto: Off</option>
+          <option value="reload-30">↻ Reload 30s</option>
+          <option value="reload-60">↻ Reload 60s</option>
+          <option value="next-30">⏭ Auto Next Page 30s</option>
+          <option value="next-60">⏭ Auto Next Page 60s</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- Active Tab Grid -->
   <main class="grid" id="phoneGrid"></main>
+
+  <!-- ADSTERRA BOTTOM / NATIVE BANNER SLOT -->
+  <div class="ad-slot-wrap">
+    <div class="ad-slot" id="adsterra-bottom-banner">
+      <span class="ad-label">Advertisement • Adsterra Native / Bottom Banner</span>
+      <!-- PASTE YOUR ADSTERRA NATIVE OR BOTTOM BANNER SCRIPT BELOW THIS LINE -->
+    </div>
+  </div>
+
+  <footer>
+    Multi Tap Browser Pro v5.0 • Smart Virtual Pagination keeps your phone fast even with 1,00,000 tabs queued.
+  </footer>
 
   <div class="toast" id="toast">Ready</div>
 
   <script>
-    const STORAGE_KEY = 'multitap_browser_workspace_v4';
-    const MAX_SAVED_TABS = 1000;
-    const MAX_OPEN_TABS = 12;
+    const STORAGE_KEY = 'multitap_browser_workspace_v5';
+    const MAX_TOTAL_TABS = 100000;
+    const MAX_SAVED_LINKS = 1000;
 
-    let phones = [];
-    let savedTabs = [];
-    let frameObserver = null;
-    let reloadTimer = null;
+    let totalTabs = 2;
+    let baseUrl = 'https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA';
+    let customOverrides = {}; // tabIndex (1-based) -> custom URL
+    let currentPage = 1;
+    let perPage = 4;
+    let autoTimer = null;
+
+    let savedLinks = [
+      { id: 's1', url: 'https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA', title: 'Saved YT Short' }
+    ];
 
     let shortcuts = [
       { name: '🎬 Saved YT Short', url: 'https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA' },
@@ -629,7 +755,7 @@
       t.textContent = msg;
       t.classList.add('show');
       clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+      t._timer = setTimeout(() => t.classList.remove('show'), 2300);
     }
 
     function escapeAttr(str) {
@@ -640,20 +766,21 @@
         .replace(/>/g, '&gt;');
     }
 
+    function formatIndianNumber(n) {
+      return Number(n).toLocaleString('en-IN');
+    }
+
     function togglePanel(panelId) {
-      const panel = document.getElementById(panelId);
-      if (!panel) return;
-      panel.classList.toggle('open');
-      if (panelId === 'savedPanel' && panel.classList.contains('open')) {
-        renderSavedTabs();
-      }
+      const el = document.getElementById(panelId);
+      if (!el) return;
+      el.classList.toggle('open');
+      if (panelId === 'savedPanel' && el.classList.contains('open')) renderSavedTabs();
     }
 
     function detectModeAndConvert(rawUrl) {
       let url = (rawUrl || '').trim();
       if (!url) return { src: 'about:blank', mode: 'Blank' };
 
-      // Plain search query
       if (!url.includes('.') && !/^https?:\/\//i.test(url)) {
         return {
           src: `https://www.bing.com/search?q=${encodeURIComponent(url)}`,
@@ -683,7 +810,7 @@
           }
           if (videoId) {
             return {
-              src: `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0`,
+              src: `https://www.youtube.com/embed/${videoId}?playsinline=1&rel=0&modestbranding=1`,
               mode: 'YouTube Embed'
             };
           }
@@ -703,7 +830,7 @@
         // Facebook Videos / Reels
         if (host.includes('facebook.com') || host.includes('fb.watch')) {
           return {
-            src: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&autoplay=true`,
+            src: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false`,
             mode: 'Facebook Embed'
           };
         }
@@ -724,7 +851,7 @@
           const vMatch = u.pathname.match(/\/(\d+)/);
           if (vMatch) {
             return {
-              src: `https://player.vimeo.com/video/${vMatch[1]}?autoplay=1&muted=1`,
+              src: `https://player.vimeo.com/video/${vMatch[1]}`,
               mode: 'Vimeo Embed'
             };
           }
@@ -737,7 +864,7 @@
             : (u.pathname.split('/video/')[1] || '').split('_')[0];
           if (dmId) {
             return {
-              src: `https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&mute=1`,
+              src: `https://www.dailymotion.com/embed/video/${dmId}`,
               mode: 'Dailymotion Embed'
             };
           }
@@ -749,321 +876,246 @@
 
     function addToSavedLibrary(url) {
       if (!url || url === 'about:blank') return;
-      if (savedTabs.some(t => t.url === url)) return;
-      if (savedTabs.length >= MAX_SAVED_TABS) return;
-      savedTabs.unshift({
-        id: 's' + Date.now() + Math.random().toString(16).slice(2, 6),
+      if (savedLinks.some(item => item.url === url)) return;
+      if (savedLinks.length >= MAX_SAVED_LINKS) savedLinks.pop();
+      savedLinks.unshift({
+        id: 's' + Date.now() + Math.random().toString(16).slice(2, 5),
         url,
         title: url
       });
     }
 
-    function updateCounters() {
-      document.getElementById('tabCounter').textContent = `Open: ${phones.length} / ${MAX_OPEN_TABS}`;
-      const badge = document.getElementById('savedBadge');
-      if (badge) badge.textContent = savedTabs.length;
-      const count = document.getElementById('savedCount');
-      if (count) count.textContent = `${savedTabs.length} / ${MAX_SAVED_TABS}`;
-    }
-
     function saveState() {
       try {
         const state = {
-          openTabs: phones.map(p => ({ url: p.url })),
-          savedTabs: savedTabs.slice(0, MAX_SAVED_TABS),
+          totalTabs,
+          baseUrl,
+          customOverrides,
+          currentPage,
+          perPage,
+          savedLinks: savedLinks.slice(0, MAX_SAVED_LINKS),
           shortcuts,
           theme: document.getElementById('themeSelect').value,
           size: document.getElementById('sizeSelect').value,
           device: document.getElementById('deviceSelect').value
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        updateCounters();
-      } catch (e) {
-        showToast('Storage full. Export JSON backup and clear old tabs.');
-      }
+      } catch (e) {}
+      updateBadges();
     }
 
-    function renderShortcuts() {
-      const bar = document.getElementById('shortcutsBar');
-      bar.innerHTML = `<span style="font-size:0.76rem; color:var(--muted); font-weight:600; white-space:nowrap;">Quick Launch:</span>`;
-      shortcuts.forEach((sc, idx) => {
-        const chip = document.createElement('div');
-        chip.className = 'chip';
-        chip.innerHTML = `<span>${escapeAttr(sc.name)}</span><span class="del-chip" title="Remove">×</span>`;
-        chip.onclick = (e) => {
-          if (e.target.classList.contains('del-chip')) {
-            shortcuts.splice(idx, 1);
-            renderShortcuts();
-            saveState();
-            return;
-          }
-          document.getElementById('globalUrl').value = sc.url;
-          openAllScreens();
-        };
-        bar.appendChild(chip);
+    function updateBadges() {
+      const totalPages = Math.max(1, Math.ceil(totalTabs / perPage));
+      if (currentPage > totalPages) currentPage = totalPages;
+      const start = totalTabs === 0 ? 0 : (currentPage - 1) * perPage + 1;
+      const end = Math.min(totalTabs, currentPage * perPage);
+
+      document.getElementById('totalTabsBadge').textContent = `Total Tabs: ${formatIndianNumber(totalTabs)}`;
+      document.getElementById('pageStatusBadge').textContent = `Page ${formatIndianNumber(currentPage)} / ${formatIndianNumber(totalPages)} (Tabs ${formatIndianNumber(start)}–${formatIndianNumber(end)})`;
+      document.getElementById('savedBadge').textContent = savedLinks.length;
+      const sc = document.getElementById('savedCount');
+      if (sc) sc.textContent = `${savedLinks.length} / ${MAX_SAVED_LINKS}`;
+
+      document.getElementById('prevBtn').disabled = currentPage <= 1;
+      document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+    }
+
+    function setTabCount(n) {
+      document.getElementById('tabCountInput').value = n;
+      document.querySelectorAll('.q-chip').forEach(c => c.classList.remove('active'));
+      const chips = document.querySelectorAll('.q-chip');
+      chips.forEach(c => {
+        if (c.textContent.replace(/,/g, '').startsWith(String(n))) c.classList.add('active');
       });
     }
 
-    function saveCurrentShortcut() {
-      const url = document.getElementById('globalUrl').value.trim();
-      if (!url) {
-        showToast('Paste a URL in the top bar first');
+    function launchTabs() {
+      const urlVal = document.getElementById('globalUrl').value.trim();
+      if (!urlVal) {
+        showToast('Pehle upar link paste karein');
         return;
       }
-      const name = prompt('Shortcut Name:', 'Custom Link');
-      if (!name) return;
-      shortcuts.push({ name: '🔗 ' + name.trim(), url });
-      renderShortcuts();
+      let count = parseInt(document.getElementById('tabCountInput').value, 10);
+      if (isNaN(count) || count < 1) count = 1;
+      if (count > MAX_TOTAL_TABS) {
+        count = MAX_TOTAL_TABS;
+        document.getElementById('tabCountInput').value = MAX_TOTAL_TABS;
+      }
+
+      baseUrl = urlVal;
+      totalTabs = count;
+      customOverrides = {};
+      currentPage = 1;
+      addToSavedLibrary(baseUrl);
+      renderCurrentPage();
       saveState();
-      showToast('Shortcut saved!');
+      showToast(`${formatIndianNumber(totalTabs)} tabs ready! Page 1 loaded.`);
     }
 
-    function addPhone(initialUrl = 'https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA', silent = false, fromLibrary = false) {
-      if (phones.length >= MAX_OPEN_TABS) {
-        showToast(`Max ${MAX_OPEN_TABS} live tabs allowed for smooth speed. Save up to ${MAX_SAVED_TABS} in Library.`);
+    function addSingleTab() {
+      if (totalTabs >= MAX_TOTAL_TABS) {
+        showToast('Max 1,00,000 tabs limit reached');
+        return;
+      }
+      totalTabs += 1;
+      document.getElementById('tabCountInput').value = totalTabs;
+      const totalPages = Math.max(1, Math.ceil(totalTabs / perPage));
+      currentPage = totalPages;
+      renderCurrentPage();
+      saveState();
+      showToast(`Tab #${formatIndianNumber(totalTabs)} added`);
+    }
+
+    function clearWorkspace() {
+      totalTabs = 0;
+      customOverrides = {};
+      currentPage = 1;
+      renderCurrentPage();
+      saveState();
+      showToast('All tabs cleared');
+    }
+
+    function renderCurrentPage() {
+      const grid = document.getElementById('phoneGrid');
+      grid.innerHTML = '';
+      updateBadges();
+
+      if (totalTabs <= 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px 16px; color:var(--muted);">No tabs open. Paste a link above, choose how many tabs you want (1 to 1,00,000), and tap <strong>Open Tabs</strong>.</div>`;
         return;
       }
 
-      const url = String(initialUrl || 'about:blank').trim();
-      if (!fromLibrary) addToSavedLibrary(url);
-
-      const id = Date.now() + Math.floor(Math.random() * 100000);
-      const tabNum = phones.length + 1;
-      phones.push({ id, url });
-
-      const { src, mode } = detectModeAndConvert(url);
+      const start = (currentPage - 1) * perPage + 1;
+      const end = Math.min(totalTabs, currentPage * perPage);
       const deviceMode = document.getElementById('deviceSelect').value || 'mobile';
 
-      const card = document.createElement('div');
-      card.className = `phone-frame device-${deviceMode}`;
-      card.id = `phone-${id}`;
+      for (let tabIndex = start; tabIndex <= end; tabIndex++) {
+        const tabUrl = customOverrides[tabIndex] || baseUrl;
+        const { src, mode } = detectModeAndConvert(tabUrl);
 
-      card.innerHTML = `
-        <div class="phone-status">
-          <span>Tap #${tabNum}</span>
-          <div class="notch"></div>
-          <span>5G • Active</span>
-        </div>
-        <div class="phone-bar">
-          <input type="text" id="input-${id}" value="${escapeAttr(url)}" onkeydown="if(event.key==='Enter') loadPhone(${id})" />
-          <button onclick="loadPhone(${id})">Go</button>
-          <button class="sec" title="Reload" onclick="reloadPhone(${id})">↻</button>
-          <button class="sec" title="Fullscreen" onclick="toggleExpand(${id})">⛶</button>
-          <button class="sec" title="Open in New Tab" onclick="openExternal(${id})">↗</button>
-          <button class="danger" title="Close" onclick="removePhone(${id})">✕</button>
-        </div>
-        <div class="phone-screen">
-          <div id="lazy-${id}" class="lazy-placeholder">
-            <span>Ready to load preview</span>
-            <button class="sec" onclick="forceLoad(${id})">▶ Load Now</button>
+        const card = document.createElement('div');
+        card.className = `phone-frame device-${deviceMode}`;
+        card.id = `phone-${tabIndex}`;
+
+        card.innerHTML = `
+          <div class="phone-status">
+            <span>Tab #${formatIndianNumber(tabIndex)}</span>
+            <div class="notch"></div>
+            <span>5G • Live</span>
           </div>
-          <iframe id="frame-${id}" data-src="${escapeAttr(src)}" loading="lazy" title="Tap ${tabNum}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="display:none"></iframe>
-        </div>
-        <div class="info-bar">
-          <span>Mode: <span class="badge-mode" id="mode-${id}">${mode}</span></span>
-          <span>Multi Tap v4</span>
-        </div>
-      `;
-
-      document.getElementById('phoneGrid').appendChild(card);
-      observeFrame(id);
-      updateCounters();
-
-      if (!silent) {
-        saveState();
-        renderSavedTabs();
-        showToast(`Tap #${tabNum} added`);
+          <div class="phone-bar">
+            <input type="text" id="input-${tabIndex}" value="${escapeAttr(tabUrl)}" onkeydown="if(event.key==='Enter') loadSingleTab(${tabIndex})" />
+            <button onclick="loadSingleTab(${tabIndex})">Go</button>
+            <button class="sec" title="Reload" onclick="reloadSingleTab(${tabIndex})">↻</button>
+            <button class="sec" title="Fullscreen" onclick="toggleExpand(${tabIndex})">⛶</button>
+            <button class="sec" title="Open in New Tab" onclick="openExternal(${tabIndex})">↗</button>
+          </div>
+          <div class="phone-screen">
+            <iframe id="frame-${tabIndex}" src="${escapeAttr(src)}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen></iframe>
+          </div>
+          <div class="info-bar">
+            <span>Mode: <span class="badge-mode" id="mode-${tabIndex}">${mode}</span></span>
+            <span>Tab ${formatIndianNumber(tabIndex)} / ${formatIndianNumber(totalTabs)}</span>
+          </div>
+        `;
+        grid.appendChild(card);
       }
     }
 
-    function observeFrame(id) {
-      const card = document.getElementById(`phone-${id}`);
-      if (!card) return;
-      if (!frameObserver) {
-        frameObserver = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const frame = entry.target.querySelector('iframe');
-              if (frame && !frame.getAttribute('src')) {
-                forceLoad(Number(frame.id.replace('frame-', '')));
-              }
-            }
-          });
-        }, { rootMargin: '300px' });
-      }
-      frameObserver.observe(card);
-    }
-
-    function forceLoad(id) {
-      const frame = document.getElementById(`frame-${id}`);
-      if (!frame) return;
-      const targetSrc = frame.dataset.src || 'about:blank';
-      frame.setAttribute('src', targetSrc);
-      frame.style.display = 'block';
-      const placeholder = document.getElementById(`lazy-${id}`);
-      if (placeholder) placeholder.style.display = 'none';
-    }
-
-    function loadPhone(id) {
-      const input = document.getElementById(`input-${id}`);
-      const frame = document.getElementById(`frame-${id}`);
-      const modeEl = document.getElementById(`mode-${id}`);
-      const url = input.value.trim();
-      const phone = phones.find(p => p.id === id);
-      if (phone) phone.url = url;
-
+    function loadSingleTab(tabIndex) {
+      const inp = document.getElementById(`input-${tabIndex}`);
+      const frame = document.getElementById(`frame-${tabIndex}`);
+      const modeEl = document.getElementById(`mode-${tabIndex}`);
+      const url = inp.value.trim();
+      customOverrides[tabIndex] = url;
       const { src, mode } = detectModeAndConvert(url);
-      frame.dataset.src = src;
+      frame.src = src;
       if (modeEl) modeEl.textContent = mode;
-
-      // Immediately load when user explicitly triggers Go / Open All
-      forceLoad(id);
-
       addToSavedLibrary(url);
       saveState();
-      renderSavedTabs();
     }
 
-    function reloadPhone(id) {
-      const frame = document.getElementById(`frame-${id}`);
-      if (!frame) return;
-      if (!frame.getAttribute('src')) {
-        forceLoad(id);
-      } else {
-        frame.src = frame.src;
-      }
+    function reloadSingleTab(tabIndex) {
+      const frame = document.getElementById(`frame-${tabIndex}`);
+      if (frame) frame.src = frame.src;
     }
 
-    function reloadAll() {
-      phones.forEach(p => reloadPhone(p.id));
-      showToast('All open tabs reloaded');
+    function reloadCurrentPage() {
+      document.querySelectorAll('#phoneGrid iframe').forEach(f => { f.src = f.src; });
+      showToast('Current page reloaded');
     }
 
-    function toggleExpand(id) {
-      const el = document.getElementById(`phone-${id}`);
+    function toggleExpand(tabIndex) {
+      const el = document.getElementById(`phone-${tabIndex}`);
       if (el) el.classList.toggle('expanded');
     }
 
-    function openExternal(id) {
-      const input = document.getElementById(`input-${id}`);
-      let url = input.value.trim();
+    function openExternal(tabIndex) {
+      const inp = document.getElementById(`input-${tabIndex}`);
+      let url = inp.value.trim();
       if (!url) return;
       if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
       window.open(url, '_blank');
     }
 
-    function removePhone(id) {
-      phones = phones.filter(p => p.id !== id);
-      const el = document.getElementById(`phone-${id}`);
-      if (el) el.remove();
-      updateCounters();
-      saveState();
-    }
-
-    function clearAllTabs() {
-      if (!phones.length) return;
-      document.getElementById('phoneGrid').innerHTML = '';
-      phones = [];
-      updateCounters();
-      saveState();
-      showToast('All open tabs cleared');
-    }
-
-    function addMultiple(count) {
-      const currentGlobal = document.getElementById('globalUrl').value.trim() || 'https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA';
-      let added = 0;
-      for (let i = 0; i < count; i++) {
-        if (phones.length < MAX_OPEN_TABS) {
-          addPhone(currentGlobal, true);
-          added++;
-        }
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderCurrentPage();
+        saveState();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-      saveState();
-      renderSavedTabs();
-      showToast(added ? `Added ${added} new tabs` : `Max ${MAX_OPEN_TABS} open tabs reached`);
     }
 
-    function openAllScreens() {
-      const url = document.getElementById('globalUrl').value.trim();
-      if (!url) {
-        showToast('Enter a link or search term first');
+    function nextPage() {
+      const totalPages = Math.max(1, Math.ceil(totalTabs / perPage));
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderCurrentPage();
+        saveState();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function jumpToTab() {
+      const val = parseInt(document.getElementById('jumpTabInput').value, 10);
+      if (isNaN(val) || val < 1 || val > totalTabs) {
+        showToast(`Enter a tab number between 1 and ${formatIndianNumber(totalTabs)}`);
         return;
       }
-      if (phones.length === 0) addPhone(url, true);
-      phones.forEach(p => {
-        const inp = document.getElementById(`input-${p.id}`);
-        if (inp) inp.value = url;
-        loadPhone(p.id);
-      });
-      showToast('Loaded across all tabs');
-    }
-
-    function renderSavedTabs() {
-      const list = document.getElementById('savedList');
-      if (!list) return;
-      const q = (document.getElementById('savedSearch')?.value || '').toLowerCase();
-      updateCounters();
-      list.innerHTML = '';
-
-      savedTabs.forEach((tab, index) => {
-        if (q && !tab.url.toLowerCase().includes(q) && !(tab.title || '').toLowerCase().includes(q)) return;
-        const item = document.createElement('div');
-        item.className = 'saved-item';
-
-        const label = document.createElement('span');
-        label.className = 'saved-label';
-        label.textContent = `${index + 1}. ${tab.title || tab.url}`;
-        label.title = tab.url;
-
-        const btnWrap = document.createElement('div');
-        btnWrap.style.display = 'flex';
-        btnWrap.style.gap = '5px';
-
-        const openBtn = document.createElement('button');
-        openBtn.style.padding = '4px 8px';
-        openBtn.style.fontSize = '0.74rem';
-        openBtn.textContent = 'Open';
-        openBtn.onclick = () => addPhone(tab.url, false, true);
-
-        const delBtn = document.createElement('button');
-        delBtn.className = 'danger';
-        delBtn.style.padding = '4px 8px';
-        delBtn.style.fontSize = '0.74rem';
-        delBtn.textContent = '×';
-        delBtn.onclick = () => {
-          savedTabs.splice(index, 1);
-          saveState();
-          renderSavedTabs();
-        };
-
-        btnWrap.append(openBtn, delBtn);
-        item.append(label, btnWrap);
-        list.appendChild(item);
-      });
-
-      if (!list.children.length) {
-        list.innerHTML = `<span style="color:var(--muted); font-size:0.8rem;">No saved tabs found.</span>`;
-      }
-    }
-
-    function clearSavedLibrary() {
-      if (!savedTabs.length) return;
-      if (!confirm('Clear all saved tabs from library?')) return;
-      savedTabs = [];
+      currentPage = Math.ceil(val / perPage);
+      renderCurrentPage();
       saveState();
-      renderSavedTabs();
-      showToast('Saved library cleared');
+      showToast(`Jumped to Tab #${formatIndianNumber(val)}`);
     }
 
-    function setAutoReload() {
-      if (reloadTimer) clearInterval(reloadTimer);
-      const sec = parseInt(document.getElementById('autoReload').value, 10);
-      if (sec > 0) {
-        reloadTimer = setInterval(() => reloadAll(), sec * 1000);
-        showToast(`Auto-reload set: ${sec}s`);
-      } else {
-        showToast('Auto-reload turned off');
+    function changePerPage() {
+      perPage = parseInt(document.getElementById('perPageSelect').value, 10) || 4;
+      currentPage = 1;
+      renderCurrentPage();
+      saveState();
+    }
+
+    function setAutoTimer() {
+      if (autoTimer) clearInterval(autoTimer);
+      const val = document.getElementById('autoActionSelect').value;
+      if (val === '0') {
+        showToast('Auto timer off');
+        return;
       }
+      const [action, secStr] = val.split('-');
+      const sec = parseInt(secStr, 10);
+      autoTimer = setInterval(() => {
+        if (action === 'reload') {
+          reloadCurrentPage();
+        } else if (action === 'next') {
+          const totalPages = Math.max(1, Math.ceil(totalTabs / perPage));
+          currentPage = currentPage < totalPages ? currentPage + 1 : 1;
+          renderCurrentPage();
+          saveState();
+        }
+      }, sec * 1000);
+      showToast(action === 'reload' ? `Auto-reload: ${sec}s` : `Auto next page: ${sec}s`);
     }
 
     function changeTheme() {
@@ -1086,59 +1138,103 @@
         card.classList.add(`device-${mode}`);
       });
       saveState();
-      showToast(`${mode[0].toUpperCase() + mode.slice(1)} frame preview active`);
     }
 
-    async function runSafeTest() {
-      const raw = document.getElementById('testUrl').value.trim();
-      const out = document.getElementById('testResult');
-      if (!raw) {
-        showToast('Enter your own hosted URL');
-        return;
+    function renderShortcuts() {
+      const bar = document.getElementById('shortcutsBar');
+      bar.innerHTML = `<span style="font-size:0.74rem; color:var(--muted); font-weight:700; white-space:nowrap;">Shortcuts:</span>`;
+      shortcuts.forEach((sc, idx) => {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.innerHTML = `<span>${escapeAttr(sc.name)}</span><span class="del-chip" title="Remove">×</span>`;
+        chip.onclick = (e) => {
+          if (e.target.classList.contains('del-chip')) {
+            shortcuts.splice(idx, 1);
+            renderShortcuts();
+            saveState();
+            return;
+          }
+          document.getElementById('globalUrl').value = sc.url;
+          launchTabs();
+        };
+        bar.appendChild(chip);
+      });
+    }
+
+    function saveCurrentShortcut() {
+      const url = document.getElementById('globalUrl').value.trim();
+      if (!url) { showToast('Paste a link first'); return; }
+      const name = prompt('Shortcut Name:', 'My Link');
+      if (!name) return;
+      shortcuts.push({ name: '🔗 ' + name.trim(), url });
+      renderShortcuts();
+      saveState();
+      showToast('Shortcut saved!');
+    }
+
+    function renderSavedTabs() {
+      const list = document.getElementById('savedList');
+      if (!list) return;
+      const q = (document.getElementById('savedSearch')?.value || '').toLowerCase();
+      updateBadges();
+      list.innerHTML = '';
+
+      savedLinks.forEach((item, idx) => {
+        if (q && !item.url.toLowerCase().includes(q)) return;
+        const row = document.createElement('div');
+        row.className = 'saved-item';
+        row.innerHTML = `
+          <span class="saved-label" title="${escapeAttr(item.url)}">${idx + 1}. ${escapeAttr(item.url)}</span>
+          <div style="display:flex; gap:5px;">
+            <button class="sm" onclick="useSavedLink(${idx})">Use</button>
+            <button class="danger sm" onclick="deleteSavedLink(${idx})">×</button>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+
+      if (!list.children.length) {
+        list.innerHTML = `<span style="color:var(--muted); font-size:0.8rem;">No saved links found.</span>`;
       }
-      let target;
-      try {
-        target = new URL(/^https?:\/\//i.test(raw) ? raw : 'https://' + raw);
-      } catch (e) {
-        showToast('Enter a valid URL');
-        return;
-      }
-      if (target.origin !== location.origin) {
-        out.textContent = 'Blocked: same-origin only';
-        showToast('Safe check only works on the same hosted domain');
-        return;
-      }
-      const runs = Math.min(10, Math.max(1, Number(document.getElementById('testRuns').value) || 1));
-      out.textContent = 'Testing...';
-      let ok = 0, totalMs = 0;
-      for (let i = 0; i < runs; i++) {
-        const started = performance.now();
-        try {
-          const response = await fetch(target.href, { cache: 'no-store', credentials: 'same-origin' });
-          totalMs += performance.now() - started;
-          if (response.ok) ok++;
-        } catch (e) {
-          totalMs += performance.now() - started;
-        }
-      }
-      out.textContent = `${ok}/${runs} OK • avg ${Math.round(totalMs / runs)} ms`;
+    }
+
+    function useSavedLink(idx) {
+      if (!savedLinks[idx]) return;
+      document.getElementById('globalUrl').value = savedLinks[idx].url;
+      launchTabs();
+      togglePanel('savedPanel');
+    }
+
+    function deleteSavedLink(idx) {
+      savedLinks.splice(idx, 1);
+      saveState();
+      renderSavedTabs();
+    }
+
+    function clearSavedLibrary() {
+      if (!savedLinks.length) return;
+      if (!confirm('Clear all saved links?')) return;
+      savedLinks = [];
+      saveState();
+      renderSavedTabs();
     }
 
     function exportBackup() {
       const data = {
         app: "Multi Tap Browser",
-        version: "4.0",
+        version: "5.0",
         exportedAt: new Date().toISOString(),
-        openTabs: phones.map((p, i) => ({ id: i + 1, url: p.url })),
-        tabs: savedTabs.slice(0, MAX_SAVED_TABS),
+        totalTabs,
+        baseUrl,
+        perPage,
+        tabs: savedLinks,
         customShortcuts: shortcuts.map(s => [s.url, s.name, s.url]),
-        theme: document.getElementById('themeSelect').value,
-        device: document.getElementById('deviceSelect').value
+        theme: document.getElementById('themeSelect').value
       };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'multitap-workspace-backup.json';
+      a.download = 'multitap-workspace-v5-backup.json';
       a.click();
       showToast('Backup JSON downloaded');
     }
@@ -1150,24 +1246,20 @@
       reader.onload = (e) => {
         try {
           const data = JSON.parse(e.target.result);
-          document.getElementById('phoneGrid').innerHTML = '';
-          phones = [];
-
-          const importedList = Array.isArray(data.tabs) ? data.tabs : [];
-          savedTabs = importedList.slice(0, MAX_SAVED_TABS).map(t => ({
-            id: t.id || ('s' + Math.random().toString(16).slice(2)),
-            url: t.url || 'https://en.m.wikipedia.org',
-            title: t.title || t.url
-          }));
-
-          const toOpen = Array.isArray(data.openTabs) && data.openTabs.length ? data.openTabs : savedTabs;
-          if (toOpen.length) {
-            toOpen.slice(0, MAX_OPEN_TABS).forEach(t => addPhone(t.url, true, true));
-          } else {
-            addPhone(undefined, true);
+          if (data.baseUrl) baseUrl = data.baseUrl;
+          if (data.totalTabs) totalTabs = Math.min(MAX_TOTAL_TABS, Math.max(1, Number(data.totalTabs)));
+          if (data.perPage) {
+            perPage = Number(data.perPage) || 4;
+            document.getElementById('perPageSelect').value = String(perPage);
           }
-
-          if (Array.isArray(data.customShortcuts) && data.customShortcuts.length) {
+          if (Array.isArray(data.tabs)) {
+            savedLinks = data.tabs.slice(0, MAX_SAVED_LINKS).map(t => ({
+              id: t.id || ('s' + Math.random().toString(16).slice(2)),
+              url: t.url || baseUrl,
+              title: t.title || t.url
+            }));
+          }
+          if (Array.isArray(data.customShortcuts)) {
             data.customShortcuts.forEach(sc => {
               const scUrl = sc[2] || sc[0];
               const scName = sc[1] || 'Saved Link';
@@ -1175,16 +1267,13 @@
                 shortcuts.push({ name: scName.startsWith('🔗') ? scName : '🔗 ' + scName, url: scUrl });
               }
             });
-            renderShortcuts();
           }
-
-          if (data.theme) {
-            document.getElementById('themeSelect').value = data.theme;
-            changeTheme();
-          }
-
+          document.getElementById('globalUrl').value = baseUrl;
+          document.getElementById('tabCountInput').value = totalTabs;
+          currentPage = 1;
+          renderShortcuts();
+          renderCurrentPage();
           saveState();
-          renderSavedTabs();
           showToast('Workspace imported!');
         } catch (err) {
           alert('Invalid JSON backup file.');
@@ -1207,30 +1296,24 @@
             const grid = document.getElementById('phoneGrid');
             grid.className = 'grid' + (saved.size === 'normal' ? '' : ` size-${saved.size}`);
           }
-          if (saved.device) {
-            document.getElementById('deviceSelect').value = saved.device;
+          if (saved.device) document.getElementById('deviceSelect').value = saved.device;
+          if (saved.baseUrl) baseUrl = saved.baseUrl;
+          if (typeof saved.totalTabs === 'number') totalTabs = saved.totalTabs;
+          if (saved.perPage) {
+            perPage = saved.perPage;
+            document.getElementById('perPageSelect').value = String(perPage);
           }
-          if (Array.isArray(saved.shortcuts) && saved.shortcuts.length) {
-            shortcuts = saved.shortcuts;
-          }
-          if (Array.isArray(saved.savedTabs)) {
-            savedTabs = saved.savedTabs.slice(0, MAX_SAVED_TABS);
-          }
-          renderShortcuts();
-
-          const initialOpen = Array.isArray(saved.openTabs) && saved.openTabs.length ? saved.openTabs : savedTabs.slice(0, 2);
-          if (initialOpen.length) {
-            initialOpen.slice(0, MAX_OPEN_TABS).forEach(t => addPhone(t.url, true, true));
-            updateCounters();
-            return;
-          }
+          if (saved.currentPage) currentPage = saved.currentPage;
+          if (saved.customOverrides) customOverrides = saved.customOverrides;
+          if (Array.isArray(saved.savedLinks) && saved.savedLinks.length) savedLinks = saved.savedLinks;
+          if (Array.isArray(saved.shortcuts) && saved.shortcuts.length) shortcuts = saved.shortcuts;
         }
       } catch (e) {}
 
+      document.getElementById('globalUrl').value = baseUrl;
+      document.getElementById('tabCountInput').value = totalTabs;
       renderShortcuts();
-      addPhone('https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA', true);
-      addPhone('https://youtube.com/shorts/Kzif6gz-TJo?si=qZN9NlCY-xaxpSCA', true);
-      saveState();
+      renderCurrentPage();
     })();
   </script>
 </body>
